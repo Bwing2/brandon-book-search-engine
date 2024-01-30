@@ -64,7 +64,11 @@ const SearchBooks = () => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
     // get token
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
+    const loggedIn = Auth.loggedIn();
+    const token = loggedIn ? Auth.getToken() : null;
+
+    console.log('Logged in:', loggedIn);
+    console.log('Token:', token);
 
     console.log('Book ID', bookId);
     console.log('Token', token);
@@ -76,7 +80,7 @@ const SearchBooks = () => {
     try {
       // uses saveBook function and spreads bookToSave object inside variables object.
       const { data } = await saveBook({
-        variables: { ...bookToSave },
+        variables: { input: { ...bookToSave } },
       });
 
       if (!data) {

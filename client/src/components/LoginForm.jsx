@@ -37,7 +37,7 @@ const LoginForm = () => {
       });
 
       // Logs in user, and sets state of user login using JWT.
-      Auth.login(data.loginUser.token);
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
