@@ -9,6 +9,7 @@ const resolvers = {
     // GraphQL first argument to resolver function is parent object, no parent here.
     // 3 parameters in resolver function required for context parameter.
     me: async (_, args, context) => {
+      console.log('context.user:', context.user);
       if (context.user) {
         return User.findOne({ _id: context.user._id });
       }
@@ -34,7 +35,7 @@ const resolvers = {
       // Generates JWT for user after login is authenticated.
       // Can be sent to client for authentication requests in the future.
       const token = signToken(user);
-      console.log('login token:', token);
+      // console.log('login token:', token);
       return { token, user };
     },
 
@@ -42,34 +43,38 @@ const resolvers = {
       const user = await User.create({ username, email, password });
 
       const token = signToken(user);
-      console.log('Add user token:', token);
+      // console.log('Add user token:', token);
       return { token, user };
     },
 
     // Pass in book object as an argument to access data in context.
-    saveBook: async (_, { book }, context) => {
+    saveBook: async (_, { input }, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
+        const user = await User.findByIdAndUpdate(
           // Filter object that updates document. Finds document where _id field matches context.user_id.
           { _id: context.user._id },
           // $addToSet is MongoDB update operator that adds value to array if it isnt already in array.
           // Adds book object to savedBooks array.
-          { $addToSet: { savedBooks: book } },
+          { $addToSet: { savedBooks: input } },
           // Returns updated version of document, and runs schema validators before update.
           { new: true, runValidators: true }
         );
+
+        return user;
       }
       throw AuthenticationError;
     },
 
-    removeBook: async (_, { book }, context) => {
+    removeBook: async (_, { bookId }, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
+        const user = await User.findOneAndUpdate(
           { _id: context.user._id },
           // $pull operator in MongoDB is used to remove all instances of a value from array.
-          { $pull: { savedBooks: { id: book.id } } },
+          { $pull: { savedBooks: { id: bookId } } },
           { new: true }
         );
+
+        return user;
       }
       throw AuthenticationError;
     },

@@ -32,6 +32,9 @@ module.exports = {
     } catch {
       console.log('Invalid token');
     }
+
+    // returns request object with user data or else context.user is undefined.
+    return req;
   },
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
