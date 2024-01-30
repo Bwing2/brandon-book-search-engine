@@ -62,10 +62,10 @@ const resolvers = {
 
     removeBook: async (_, { book }, context) => {
       if (context.user) {
-        return User.findOneAndDelete(
+        return User.findOneAndUpdate(
           { _id: context.user._id },
           // $pull operator in MongoDB is used to remove all instances of a value from array.
-          { $pull: { savedBooks: book } },
+          { $pull: { savedBooks: { id: book.id } } },
           { new: true }
         );
       }
