@@ -66,6 +66,9 @@ const SearchBooks = () => {
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
+    console.log('Book ID', bookId);
+    console.log('Token', token);
+
     if (!token) {
       return false;
     }
@@ -76,7 +79,7 @@ const SearchBooks = () => {
         variables: { ...bookToSave },
       });
 
-      if (!data.response.ok) {
+      if (!data) {
         throw new Error('something went wrong!');
       }
 
