@@ -34,6 +34,7 @@ const resolvers = {
       // Generates JWT for user after login is authenticated.
       // Can be sent to client for authentication requests in the future.
       const token = signToken(user);
+      console.log('login token:', token);
       return { token, user };
     },
 
@@ -41,6 +42,7 @@ const resolvers = {
       const user = await User.create({ username, email, password });
 
       const token = signToken(user);
+      console.log('Add user token:', token);
       return { token, user };
     },
 
