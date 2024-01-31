@@ -64,11 +64,7 @@ const SearchBooks = () => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
     // get token
-    const loggedIn = Auth.loggedIn();
-    const token = loggedIn ? Auth.getToken() : null;
-
-    console.log('Logged in:', loggedIn);
-    console.log('Token:', token);
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     console.log('Book ID', bookId);
     console.log('Token', token);

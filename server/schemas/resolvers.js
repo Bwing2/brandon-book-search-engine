@@ -70,7 +70,7 @@ const resolvers = {
         const user = await User.findOneAndUpdate(
           { _id: context.user._id },
           // $pull operator in MongoDB is used to remove all instances of a value from array.
-          { $pull: { savedBooks: { id: bookId } } },
+          { $pull: { savedBooks: { bookId: bookId } } },
           { new: true }
         );
 
